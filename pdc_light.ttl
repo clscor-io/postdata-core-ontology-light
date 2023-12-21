@@ -1,0 +1,490 @@
+# This is an adapted version of the POSTDATA Core Ontology. 
+# It includes only the bare minimum classes and properties (including inverses) that are used when transforming downloaded corpora (Averell) and running Horace to generate RDF.
+# We used an adapted version of Horace, see https://github.com/ingoboerner/horace/tree/clscor. It outputs a CLSCor aligned modeling in parallel to POSTDATA core, thus we can
+# consider the output an implicit mapping of CLSCor and POSTDATA. This ontology aims to support such a possible mapping of POSTDATAs datasets to the CLSCor Data Model, DraCor and ELTeC.
+# In general: restrictions were removed, they might end up in some SHACL contructs??
+# Created by Ingo Börner within the CLS INFRA project 
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://postdata.linhd.uned.es/ontology/postdata-core> a owl:Ontology ;
+    rdfs:label "Ontopoetry Core Ontology [adapted LRMoo aligned 'light' version]" ;
+    owl:versionInfo "V3.0 [LRMoo aligned]" .
+
+#################################################################
+#    Classes
+#################################################################
+
+
+<http://postdata.linhd.uned.es/ontology/postdata-core#AgentRole> a owl:Class ;
+    rdfs:subClassOf <http://www.cidoc-crm.org/cidoc-crm/PC14_carried_out_by> ;
+    rdfs:label "Agent Role" ;
+    rdfs:comment """This class relates a work (e.g., poetic work, redaction, other transmission elements) and an Agent (Person or Organisation), and allows specifying the role that the agent plays in such work (e.g., creator, sponsor, editor).""" ;
+    rdfs:isDefinedBy "http://postdata.linhd.uned.es/ontology/postdata-core" .
+
+# ORIGINAL:
+#:AgentRole rdf:type owl:Class ;
+#           owl:equivalentClass <http://www.cidoc-crm.org/cidoc-crm/PC14_Carried_Out_By> ;
+#           rdfs:subClassOf [ rdf:type owl:Restriction ;
+#                             owl:onProperty :roleFunction ;
+#                             owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+#                             owl:onClass [ owl:intersectionOf ( <http://www.w3.org/2004/02/skos/core#Concept>
+#                                                                [ rdf:type owl:Restriction ;
+#                                                                  owl:onProperty <http://www.w3.org/2004/02/skos/core#inScheme> ;
+#                                                                  owl:hasValue <http://postdata.linhd.uned.es/kos/role-function>
+#                                                                ]
+#                                                              ) ;
+#                                           rdf:type owl:Class
+#                                         ]
+#                           ] ,
+#                           [ rdf:type owl:Restriction ;
+#                             owl:onProperty :assessedCertainty ;
+#                             owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+#                             owl:onClass [ owl:intersectionOf ( <http://www.w3.org/2004/02/skos/core#Concept>
+#                                                                [ rdf:type owl:Restriction ;
+#                                                                  owl:onProperty <http://www.w3.org/2004/02/skos/core#inScheme> ;
+#                                                                  owl:hasValue <http://postdata.linhd.uned.es/kos/certainty>
+#                                                                ]
+#                                                              ) ;
+#                                           rdf:type owl:Class
+#                                         ]
+#                           ] ;
+
+# CHANGES:
+# made it a subClassOf crm:PC14_carried_out_by; did not take over the Restrictions, ...
+
+
+<http://postdata.linhd.uned.es/ontology/postdata-core#PoeticWork> a owl:Class ;
+    rdfs:subClassOf <http://iflastandards.info/ns/lrm/lrmoo/F1_Work> ;
+    rdfs:label "Poetic Work" ;
+    rdfs:comment """Abstract concept of an artistic creation. In the POSTDATA ontology network these creations must be in verse (e.g., poem, play, song).""" ;
+    rdfs:isDefinedBy "http://postdata.linhd.uned.es/ontology/postdata-core" .
+
+# ORIGINAL:
+###  http://postdata.linhd.uned.es/ontology/postdata-core#PoeticWork
+#:PoeticWork rdf:type owl:Class ;
+#            rdfs:subClassOf :IndividualWork ,
+#                            [ rdf:type owl:Restriction ;
+#                              owl:onProperty :authorEducationLevel ;
+#                              owl:allValuesFrom [ owl:intersectionOf ( <http://www.w3.org/2004/02/skos/core#Concept>
+#                                                                       [ rdf:type owl:Restriction ;
+#                                                                         owl:onProperty <http://www.w3.org/2004/02/skos/core#inScheme> ;
+#                                                                         owl:hasValue <http://postdata.linhd.uned.es/kos/education-level>
+#                                                                       ]
+#                                                                     ) ;
+#                                                  rdf:type owl:Class
+#                                                ]
+#                            ] ,
+#                            [ rdf:type owl:Restriction ;
+#                              owl:onProperty :genre ;
+#                              owl:allValuesFrom [ owl:intersectionOf ( <http://www.w3.org/2004/02/skos/core#Concept>
+#                                                                       [ rdf:type owl:Restriction ;
+#                                                                         owl:onProperty <http://www.w3.org/2004/02/skos/core#inScheme> ;
+#                                                                         owl:hasValue <http://postdata.linhd.uned.es/kos/genre>
+#                                                                       ]
+#                                                                     ) ;
+#                                                  rdf:type owl:Class
+#                                                ]
+#                            ] ,
+#                            [ rdf:type owl:Restriction ;
+#                              owl:onProperty :poeticType ;
+#                              owl:allValuesFrom [ owl:intersectionOf ( <http://www.w3.org/2004/02/skos/core#Concept>
+#                                                                       [ rdf:type owl:Restriction ;
+#                                                                         owl:onProperty <http://www.w3.org/2004/02/skos/core#inScheme> ;
+#                                                                         owl:hasValue <http://postdata.linhd.uned.es/kos/poetic-type>
+#                                                                       ]
+#                                                                     ) ;
+#                                                  rdf:type owl:Class
+#                                                ]
+#                            ] ,
+#                            [ rdf:type owl:Restriction ;
+#                              owl:onProperty :originalTitle ;
+#                              owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+#                              owl:onDataRange xsd:string
+#                            ] ;
+#            rdfs:comment """Abstract concept of an artistic creation. In the POSTDATA ontology network these creations must be in verse (e.g., poem, play, song). 
+#
+#For example, Os LusÃ­adas by Luis Vaz de CamÃµes; La Commedia by Dante; the poem Ad te deus by an Anonymous author written in between the 7th and 9th centuries."""@en ;
+
+# CHANGES:
+# Made it a rdfs:subClassOf LRMoo F1 Work, did not carry over the restrictions
+
+
+<http://postdata.linhd.uned.es/ontology/postdata-core#WorkConception> a owl:Class ;
+    rdfs:subClassOf <http://iflastandards.info/ns/lrm/lrmoo/F27_Work_Creation> ;
+    rdfs:label "Work Conception" ;
+    rdfs:comment """This class comprises the births of original ideas. It marks the initiation of the creation of a work.""" ;
+    rdfs:isDefinedBy "http://postdata.linhd.uned.es/ontology/postdata-core" .
+
+# ORIGINAL:
+# :WorkConception rdf:type owl:Class ;
+#                rdfs:subClassOf :Activity ;
+#                rdfs:comment """This class comprises the births of original ideas. It marks the initiation of the creation of a work.
+#
+# This class is equivalent to F27 Work Conception."""@en ;
+#                rdfs:label "Work Conception"@en .
+
+# CHANGES:
+# made it a subClassOf LRMoo F27 Work Creation (This inherits from CIDOC-CRM E7 Activity)
+
+<http://postdata.linhd.uned.es/ontology/postdata-core#Redaction> a owl:Class ;
+    rdfs:subClassOf <http://iflastandards.info/ns/lrm/lrmoo/F2_Expression> ;
+    rdfs:label "Redaction" ;
+    rdfs:comment """The textual signs of a poetic work. Each version and edition of a work is realised by its own redaction.""" ;
+    rdfs:isDefinedBy "http://postdata.linhd.uned.es/ontology/postdata-core" .
+
+
+# ORIGINAL:
+###  http://postdata.linhd.uned.es/ontology/postdata-core#Redaction
+#:Redaction rdf:type owl:Class ;
+#           rdfs:subClassOf :LinguisticObject ,
+#                           :SelfContainedExpression ,
+#                           [ rdf:type owl:Restriction ;
+#                             owl:onProperty :genre ;
+#                             owl:allValuesFrom [ owl:intersectionOf ( <http://www.w3.org/2004/02/skos/core#Concept>
+#                                                                      [ rdf:type owl:Restriction ;
+#                                                                        owl:onProperty <http://www.w3.org/2004/02/skos/core#inScheme> ;
+#                                                                        owl:hasValue <http://postdata.linhd.uned.es/kos/genre>
+#                                                                      ]
+#                                                                    ) ;
+#                                                 rdf:type owl:Class
+#                                               ]
+#                           ] ,
+#                           [ rdf:type owl:Restriction ;
+#                             owl:onProperty :hasSynthesis ;
+#                             owl:allValuesFrom :Redaction
+#                           ] ,
+#                           [ rdf:type owl:Restriction ;
+#                             owl:onProperty :isSynthesisOf ;
+#                             owl:allValuesFrom :Redaction
+#                           ] ,
+#                           [ rdf:type owl:Restriction ;
+#                             owl:onProperty :isTranslationOf ;
+#                             owl:allValuesFrom :Redaction
+#                           ] ,
+#                           [ rdf:type owl:Restriction ;
+#                             owl:onProperty :typeOfTextualElement ;
+#                             owl:allValuesFrom [ owl:intersectionOf ( <http://www.w3.org/2004/02/skos/core#Concept>
+#                                                                      [ rdf:type owl:Restriction ;
+#                                                                        owl:onProperty <http://www.w3.org/2004/02/skos/core#inScheme> ;
+#                                                                        owl:hasValue <http://postdata.linhd.uned.es/kos/textual-element-type>
+#                                                                      ]
+#                                                                    ) ;
+#                                                 rdf:type owl:Class
+#                                               ]
+#                           ] ,
+#                           [ rdf:type owl:Restriction ;
+#                             owl:onProperty :isTranslationOf ;
+#                             owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+#                             owl:onClass :Redaction
+#                           ] ,
+#                           [ rdf:type owl:Restriction ;
+#                             owl:onProperty :realises ;
+#                             owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+#                             owl:onClass :PoeticWork
+#                           ] ,
+#                           [ rdf:type owl:Restriction ;
+#                             owl:onProperty :originalTitle ;
+#                             owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+#                             owl:onDataRange xsd:string
+#                           ] ,
+#                           [ rdf:type owl:Restriction ;
+#                             owl:onProperty :redactionNumber ;
+#                             owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+#                             owl:onDataRange xsd:string
+#                           ] ,
+#                           [ rdf:type owl:Restriction ;
+#                             owl:onProperty :text ;
+#                             owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+#                             owl:onDataRange xsd:string
+#                           ] ;
+#           rdfs:comment """The textual signs of a poetic work. Each version and edition of a work is realised by its own redaction.
+#
+#Eg.: The palaeographic edition of A solis ortu usque ad occidua preserved in Lat. 1154 (BNF) and its critical edition are two Redaction of the same Poetic Work."""@en ;
+#           rdfs:isDefinedBy "http://postdata.linhd.uned.es/ontology/postdata-core/" ;
+#           rdfs:label "Redaction"@en .
+
+# CHANGES:
+# removed the restrictions
+# made it a subClassOf LRMoo F2 Expression (instead of FRBRoo Self-Contained Expression [so glad, this is gone!]. )
+# It is not necessary to make it a subClassOf E33 Linguistic Object (I think) because it inherits from CIDOCs E71 Information Object (E33 would be a subClassOf E71 though)
+# What would be the benefit of making it also a Linguistic Object?
+# E33 does only have two additional properties to E71: Properties: P72 has language (is language of): E56 Language, P73 has translation (is translation of): E33 Linguistic Object
+# but I think, because it is already a subClassOf LRMoo F2 instance are already sufficiently "Text"; P190 can be used anyways
+
+
+<http://postdata.linhd.uned.es/ontology/postdata-core#Person> a owl:Class ;
+    rdfs:subClassOf <http://www.cidoc-crm.org/cidoc-crm/E39_Actor> ;
+    rdfs:label "Person" ;
+    rdfs:comment """This class comprises real persons who live or are assumed to have lived.""" ;
+    rdfs:isDefinedBy "http://postdata.linhd.uned.es/ontology/postdata-core" .
+
+# ORIGINAL:
+###  http://postdata.linhd.uned.es/ontology/postdata-core#Person
+#:Person rdf:type owl:Class ;
+#        rdfs:subClassOf :Agent ;
+#        rdfs:comment """This class comprises real persons who live or are assumed to have lived.
+#
+#This class is equivalent to F10 Person."""@en ;
+#        rdfs:label "Person"@en .
+
+# CHANGES:
+# we assume that pdc:Agent is basically an equivalent class to crm:E39_Actor. Therefore Person can be a direct subClassOf E39. The only problem might be that also "Rantanplan" (Software, Tool)
+# is considered an Agent at some other place... 
+
+#################################################################
+#    Object Properties
+#################################################################
+
+
+<http://postdata.linhd.uned.es/ontology/postdata-core#hasAgent> a owl:ObjectProperty ;
+    rdfs:subPropertyOf <http://www.cidoc-crm.org/cidoc-crm/P02_has_range> ;
+    rdfs:label "has agent" ;
+    rdfs:comment """This property points to the Agent that participates in the Agent-Role aggregation.""" ;
+    rdfs:domain <http://postdata.linhd.uned.es/ontology/postdata-core#AgentRole> ;
+    rdfs:range <http://www.cidoc-crm.org/cidoc-crm/E39_Actor> ;
+    owl:inverseOf <http://postdata.linhd.uned.es/ontology/postdata-core#isAgentOf> ;
+    rdfs:isDefinedBy "http://postdata.linhd.uned.es/ontology/postdata-core" .
+
+# ORIGINAL:
+#:hasAgent rdf:type owl:ObjectProperty ;
+#          owl:equivalentProperty <http:/stampasonto#P02_has_range> ;
+#          owl:inverseOf :isAgentOf ;
+#          rdfs:domain :AgentRole ;
+#          rdfs:range :Agent ;
+#          rdfs:comment "This property points to the Agent that participates in the Agent-Role aggregation.nnThis property emerges by reusing the Agent-Role Ontology Design Pattern:n- http://www.ontologydesignpatterns.org/cp/owl/agentrole.owln- http://www.ontologydesignpatterns.org/cp/owl/objectrole.owl"@en ;
+#          rdfs:isDefinedBy "http://postdata.linhd.uned.es/ontology/postdata-core/" ;
+
+# CHANGES:
+# change rdfs:range from pdc:Agent to crm:Actor
+# made it a subPropertyOf CIDOC P02 has range
+
+<http://postdata.linhd.uned.es/ontology/postdata-core#isAgentOf> a owl:ObjectProperty ;
+    rdfs:subPropertyOf <http://www.cidoc-crm.org/cidoc-crm/P02i_is_range_of> ;
+    rdfs:label "is agent of"@en ;
+    rdfs:comment """This property relates an Agent with the Agent Role entity that describes a role for that Agent in the context of a Poetic Work, Redaction or Ensemble.""" ;
+    rdfs:domain <http://www.cidoc-crm.org/cidoc-crm/E39_Actor> ;
+    rdfs:range <http://postdata.linhd.uned.es/ontology/postdata-core#AgentRole> ;
+    owl:inverseOf <http://postdata.linhd.uned.es/ontology/postdata-core#hasAgent> ;
+    rdfs:isDefinedBy "http://postdata.linhd.uned.es/ontology/postdata-core" .
+
+# ORIGINAL:
+#:isAgentOf rdf:type owl:ObjectProperty ;
+#           owl:equivalentProperty <http:/stampasonto#P02i_is_range_of> ;
+#           rdfs:domain :Agent ;
+#           rdfs:range :AgentRole ;
+#           rdfs:comment "This property relates an Agent with the Agent Role entity that describes a role for that Agent in the context of a Poetic Work, Redaction or Ensemble.nnThis property emerges by reusing the agent-role Ontology Design Pattern:n- http://www.ontologydesignpatterns.org/cp/owl/agentrole.owln- http://www.ontologydesignpatterns.org/cp/owl/objectrole.owl"@en ;
+#           rdfs:isDefinedBy "http://postdata.linhd.uned.es/ontology/postdata-core/" ;
+#           rdfs:label "is agent of"@en .
+
+# CHANGES:
+# rdfs:domain is CIDOC E39 Actor (see inverse property)
+# made it a subPropertyOf CIDOC P02i
+
+
+<http://postdata.linhd.uned.es/ontology/postdata-core#realises> a owl:ObjectProperty ;
+    rdfs:subPropertyOf <http://iflastandards.info/ns/lrm/lrmoo/R3i_realises> ;
+    rdfs:label "realises" ;
+    rdfs:comment "This property points to the work (an instance of Poetic Work) of which the text at hand (the current Redaction) is a materialisation."@en ;
+    rdfs:domain <http://postdata.linhd.uned.es/ontology/postdata-core#Redaction> ;
+    rdfs:range <http://postdata.linhd.uned.es/ontology/postdata-core#PoeticWork> ;
+    owl:inverseOf <http://postdata.linhd.uned.es/ontology/postdata-core#isRealisedThrough> ;
+    rdfs:isDefinedBy "http://postdata.linhd.uned.es/ontology/postdata-core" .
+
+# ORIGINAL:
+# :realises rdf:type owl:ObjectProperty ;
+#          rdfs:subPropertyOf <http://iflastandards.info/ns/fr/frbr/frbroo/R9i> ,
+#                             :realisesWork ;
+#          rdfs:domain :Redaction ;
+#          rdfs:range :PoeticWork ;
+#          rdfs:comment "This property points to the work (an instance of Poetic Work) of which the text at hand (the current Redaction) is a materialisation.nnThis property is subproperty of edm:aggregatedCHO to keep alignments with Europeana Data Model."@en ;
+#          rdfs:isDefinedBy "http://postdata.linhd.uned.es/ontology/postdata-core/" ;
+#          rdfs:label "realises"@en .
+
+# CHANGES:
+# changed subProperty to R3i of LRMoo; removed the :realisesWork (b/c we don't use the more general to pdc:PoetricWork pdc:Work)
+
+
+<http://postdata.linhd.uned.es/ontology/postdata-core#isRealisedThrough> a owl:ObjectProperty ;
+    rdfs:subPropertyOf <http://iflastandards.info/ns/lrm/lrmoo/R3_is_realised_in> ;
+    rdfs:label "is realised through" ;
+    rdfs:comment "This property points to a text (an instance of Redaction) which is one of the materialisations of the work under analysis." ;
+    rdfs:domain <http://postdata.linhd.uned.es/ontology/postdata-core#PoeticWork> ;
+    rdfs:range <http://postdata.linhd.uned.es/ontology/postdata-core#Redaction> ;
+    owl:inverseOf <http://postdata.linhd.uned.es/ontology/postdata-core#realises> ; 
+    rdfs:isDefinedBy "http://postdata.linhd.uned.es/ontology/postdata-core" .
+
+# ORIGINAL:
+#:isRealisedThrough rdf:type owl:ObjectProperty ;
+#                   rdfs:subPropertyOf <http://iflastandards.info/ns/fr/frbr/frbroo/R9> ,
+#                                      :isRealisedInSelfContainedExpression ;
+#                   owl:inverseOf :realises ;
+#                   rdfs:domain :PoeticWork ;
+#                   rdfs:range :Redaction ;
+#                   rdfs:comment "This property points to a text (an instance of Redaction) which is one of the materialisations of the work under analysis"@en ;
+#                   rdfs:isDefinedBy "http://postdata.linhd.uned.es/ontology/postdata-core/" ;
+#                   rdfs:label "is realised through"@en .
+
+#CHANGES:
+#according to the inverse subProperty of LRMoo and remove the more general :isRealisedInSelfContainedExpression
+
+
+<http://postdata.linhd.uned.es/ontology/postdata-core#hasAgentRole> a owl:ObjectProperty ;
+    rdfs:label "has agent role" ;
+    rdfs:domain <http://www.cidoc-crm.org/cidoc-crm/E7_Activity> ;
+    rdfs:range <http://postdata.linhd.uned.es/ontology/postdata-core#AgentRole> ;
+    owl:inverseOf <http://postdata.linhd.uned.es/ontology/postdata-core#isAgentRoleOf> ;
+    rdfs:isDefinedBy "http://postdata.linhd.uned.es/ontology/postdata-core" .
+    
+    # ORIGINAL:
+    # owl:equivalentProperty <http://www.cidoc-crm.org/cidoc-crm/P01i_is_domain_of> ;
+    # owl:inverseOf :isAgentRoleOf ;
+    # rdfs:domain :Activity ;
+    # rdfs:range :AgentRole ;
+    # rdfs:comment "This property points to an entity AgentRole that represents an Agent who plays a Role (such as an editor, critic or sponsor) associated to a given Poetic Work, a Redaction or an Ensemble"@en ;
+    # rdfs:isDefinedBy <http://postdata.linhd.uned.es/ontology/postdata-core/> ;
+    # rdfs:label "has agent role"@en .
+
+    # CHANGES:
+    # connected rdfs:domain directly to CIDOC E7 Activity
+
+
+<http://postdata.linhd.uned.es/ontology/postdata-core#isAgentRoleOf> a owl:ObjectProperty ;
+    rdfs:label "is agent role of" ;
+    rdfs:comment """This property points to the Ensemble, Redaction or Poetic Work on which the given Agent Role entity is applied.""" ;
+    rdfs:domain <http://postdata.linhd.uned.es/ontology/postdata-core#AgentRole> ;
+    rdfs:range <http://www.cidoc-crm.org/cidoc-crm/E7_Activity> ;
+    owl:inverseOf <http://postdata.linhd.uned.es/ontology/postdata-core#hasAgentRole> ;
+    rdfs:isDefinedBy "http://postdata.linhd.uned.es/ontology/postdata-core" .
+
+    # ORIGINAL:
+    # owl:equivalentProperty <http://www.cidoc-crm.org/cidoc-crm/P01_has_domain> ;
+    # rdfs:domain :AgentRole ;
+    # rdfs:range :Activity ;
+    # rdfs:comment "This property points to the Ensemble, Redaction or Poetic Work on which the given Agent Role entity is applied.nnThis property emerges by reusing the agent-role Ontology Design Pattern:n- http://www.ontologydesignpatterns.org/cp/owl/agentrole.owln- http://www.ontologydesignpatterns.org/cp/owl/objectrole.owl"@en ;
+    # rdfs:label "is agent role of"@en .
+
+    # CHANGES:
+    # connected rdfs:range directly to CIDOC E7 Activity
+
+
+<http://postdata.linhd.uned.es/ontology/postdata-core#roleFunction> a owl:ObjectProperty ;
+    rdfs:subPropertyOf <http://www.cidoc-crm.org/cidoc-crm/P14.1_in_the_role_of> ;
+    rdfs:label "role function" ;
+    rdfs:comment "Specific function performed by some Agent on a Poetic Work (e.g. sponsor, actor, collector, singer, arranger, transcriptor). This is connected to the Agent Role class." ;
+    rdfs:domain <http://postdata.linhd.uned.es/ontology/postdata-core#AgentRole> ;
+    rdfs:range <http://www.cidoc-crm.org/cidoc-crm/E55_Type> ;
+    rdfs:isDefinedBy "http://postdata.linhd.uned.es/ontology/postdata-core" .
+
+    # ORIGINAL:
+    # :roleFunction rdf:type owl:ObjectProperty ;
+    # owl:equivalentProperty <http://www.cidoc-crm.org/cidoc-crm/P14.1_in_the_role_of> ;
+    # rdfs:domain :AgentRole ;
+    # rdfs:range [ owl:intersectionOf ( <http://www.w3.org/2004/02/skos/core#Concept>
+    #                                            [ rdf:type owl:Restriction ;
+    #                                              owl:onProperty <http://www.w3.org/2004/02/skos/core#inScheme> ;
+    #                                              owl:hasValue <http://postdata.linhd.uned.es/kos/role-function>
+    #                                            ]
+    #                                          ) ;
+    #                       rdf:type owl:Class
+    #                     ] ;
+    
+    # CHANGES:
+    # changed owl:equivalentProperty to rdfs:subPropertyOf
+    # changed the rdfs:range to crm:E55 Type (we assume that E55 Type and skos:Concept are equivalent classes)
+
+
+<http://postdata.linhd.uned.es/ontology/postdata-core#initiated> a owl:ObjectProperty ;
+    rdfs:subPropertyOf <http://iflastandards.info/ns/lrm/lrmoo/R16_created> ;
+    rdfs:label "initiated" ;
+    rdfs:comment "This property associates the first conception of a work and the work itself that ensued from a given initial idea." ;
+    rdfs:domain <http://postdata.linhd.uned.es/ontology/postdata-core#WorkConception> ;
+    rdfs:range <http://postdata.linhd.uned.es/ontology/postdata-core#PoeticWork> ;
+    owl:inverseOf <http://postdata.linhd.uned.es/ontology/postdata-core#wasInitiatedBy> ;
+    rdfs:isDefinedBy "http://postdata.linhd.uned.es/ontology/postdata-core" .
+
+    # ORIGINAL:
+    # :initiated rdf:type owl:ObjectProperty ;
+    #       rdfs:subPropertyOf <http://iflastandards.info/ns/fr/frbr/frbroo/R16> ;
+    #       rdfs:domain :WorkConception ;
+    #       rdfs:range :Work ;
+    #       owl:inverseOf :wasInitiatedBy ;
+    
+
+    # CHANGES:
+    # changed rdfs:range to pdc:PoeticWork instead of the overarching Work class (we only have instances of PoeticWork in the data)
+    # made it a subPropertyOf LRMoo R16 created
+    # added owl:inverseOf (this is missing in the original Ontology)
+
+
+###  http://postdata.linhd.uned.es/ontology/postdata-core#wasInitiatedBy
+<http://postdata.linhd.uned.es/ontology/postdata-core#wasInitiatedBy> a owl:ObjectProperty ;
+    rdfs:subPropertyOf <http://iflastandards.info/ns/lrm/lrmoo/R16i_was_created_by> ;
+    rdfs:label "was initiated by" ;
+    rdfs:domain <http://postdata.linhd.uned.es/ontology/postdata-core#PoeticWork> ;
+    rdfs:range <http://postdata.linhd.uned.es/ontology/postdata-core#WorkConception> ;
+    owl:inverseOf <http://postdata.linhd.uned.es/ontology/postdata-core#initiated> ;
+    rdfs:isDefinedBy "http://postdata.linhd.uned.es/ontology/postdata-core" .
+
+
+# ORIGINAL:
+# :wasInitiatedBy rdf:type owl:ObjectProperty ;
+# rdfs:subPropertyOf <http://iflastandards.info/ns/fr/frbr/frbroo/R16i> ;
+# rdfs:domain :Work ;
+# rdfs:range :WorkConception ;
+# rdfs:comment "Inverse property of pdc:initiated."@en ;
+
+# CHANGES:
+# added owl:inverseOf (this is missing in the original Ontology)
+# changed rdfs:domain to PoetricWork
+# made it a subPropertyOf LRMoo R16i was created by
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+<http://postdata.linhd.uned.es/ontology/postdata-core#name> a owl:DatatypeProperty ;
+    rdfs:label "name" ;
+    rdfs:comment """Contains a proper noun or noun phrase that refers the current Person. 
+        This property is considered a shortcut of the fullblown CIDOC-Crm path via P1 is identified by E41 Appellation (P2 has type 'Name').""" ;
+    rdfs:domain <http://postdata.linhd.uned.es/ontology/postdata-core#Person> ;
+    rdfs:range xsd:string ;
+    rdfs:isDefinedBy "http://postdata.linhd.uned.es/ontology/postdata-core" .
+
+# ORIGINAL:
+# :name rdf:type owl:DatatypeProperty ;
+#      rdfs:subPropertyOf :isIdentifiedBy ;
+#      rdfs:domain :Person ;
+#      rdfs:range xsd:string ;
+#      rdfs:comment "Contains a proper noun or noun phrase that refers the current Person. Taking as example the full name of Federico GarcÃ­a Lorca, \"name\" would be \"Federico del Sagrado CorazÃ³n de JesÃºs GarcÃ­a Lorca\"." ;
+
+# CHANGES:
+# This property is considered a shortcut of the full-blown CIDOC path via P1 is identified by E41 Appellation (P2 has type Name).
+
+<http://postdata.linhd.uned.es/ontology/postdata-core#text> a owl:DatatypeProperty ;
+    rdfs:subPropertyOf <http://www.cidoc-crm.org/cidoc-crm/P190_has_symbolic_content> ;
+    rdfs:label "text" ;
+    rdfs:comment "Reference to textual contents . The contents of this property do not allow finer analysis by stanza or line. It can be a text of a diplomatic edition, semidiplomatic edition or of a critical edition (among others) or even a translation. The property typeOfRedaction defines the type of Edition or if it is a translation. There is only one possible text value for each Redaction."@en ;
+    rdfs:domain <http://www.cidoc-crm.org/cidoc-crm/E90_Symbolic_Object> ;
+    rdfs:range xsd:string ;
+    rdfs:isDefinedBy "http://postdata.linhd.uned.es/ontology/postdata-core" .
+
+# ORIGINAL:
+
+###  http://postdata.linhd.uned.es/ontology/postdata-core#text
+# :text rdf:type owl:DatatypeProperty ;
+#      rdfs:subPropertyOf <http://www.cidoc-crm.org/cidoc-crm/P190_has_symbolic_content> ;
+#      rdfs:domain :LinguisticObject ;
+#      rdfs:range xsd:string ;
+#      rdfs:comment "Reference to textual contents . The contents of this property do not allow finer analysis by stanza or line. It can be a text of a diplomatic edition, semidiplomatic edition or of a critical edition (among others) or even a translation. The property typeOfRedaction defines the type of Edition or if it is a translation. There is only one possible text value for each Redaction."@en ;
+#      rdfs:isDefinedBy "http://postdata.linhd.uned.es/ontology/postdata-core/" ;
+#      rdfs:label "text"@en .
+
+# CHANGES:
+# domain of CIDOC P190 has symbolic content is E90_Symbolic_Object; therefore it would not necessary to make the Redaction a subClassOf E33 Linguistic Object as well; b/c
+# in LRMoo F2 Expression is a subClassOf E71 Information Object (E33 is a subClassOf E71); E71 also inherits from E90 Symbolic Object
+# We keept the original range of P190
